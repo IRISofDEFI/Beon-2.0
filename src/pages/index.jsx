@@ -14,6 +14,11 @@ import About from "./About";
 
 import Contact from "./Contact";
 
+<<<<<<< HEAD
+=======
+import MarketPlace from "./MarketPlace";
+
+>>>>>>> ai-temp/main
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 const PAGES = {
@@ -32,6 +37,11 @@ const PAGES = {
     
     Contact: Contact,
     
+<<<<<<< HEAD
+=======
+    MarketPlace: MarketPlace,
+    
+>>>>>>> ai-temp/main
 }
 
 function _getCurrentPage(url) {
@@ -73,6 +83,11 @@ function PagesContent() {
                 
                 <Route path="/Contact" element={<Contact />} />
                 
+<<<<<<< HEAD
+=======
+                <Route path="/MarketPlace" element={<MarketPlace />} />
+                
+>>>>>>> ai-temp/main
             </Routes>
         </Layout>
     );
