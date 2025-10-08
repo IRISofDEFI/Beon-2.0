@@ -14,6 +14,8 @@ import About from "./About";
 
 import Contact from "./Contact";
 
+import MarketPlace from "./MarketPlace";
+
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 
 const PAGES = {
@@ -31,6 +33,8 @@ const PAGES = {
     About: About,
     
     Contact: Contact,
+    
+    MarketPlace: MarketPlace,
     
 }
 
@@ -72,6 +76,8 @@ function PagesContent() {
                 <Route path="/About" element={<About />} />
                 
                 <Route path="/Contact" element={<Contact />} />
+                
+                <Route path="/MarketPlace" element={<MarketPlace />} />
                 
             </Routes>
         </Layout>

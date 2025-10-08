@@ -2,16 +2,15 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Product, Category } from '@/api/entities';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import Sidebar from '../components/shop/Sidebar';
-import ShopProductCard from '../components/shop/ShopProductCard';
+import MarketPlaceSidebar from '../components/marketplace/MarketPlaceSidebar';
+import MarketPlaceProductCard from '../components/marketplace/MarketPlaceProductCard';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from '@/components/ui/button';
 
 const ITEMS_PER_PAGE = 12;
 
 const LoadingSkeleton = () => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {[...Array(9)].map((_, i) => (
       <div key={i} className="bg-[#2c3440] p-4 rounded-lg">
         <Skeleton className="h-56 w-full mb-4" />
@@ -23,7 +22,7 @@ const LoadingSkeleton = () => (
   </div>
 );
 
-export default function ShopPage() {
+export default function MarketPlacePage() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -70,7 +69,7 @@ export default function ShopPage() {
         setProducts(productsData);
         setCategories(categoriesData);
       } catch (err) {
-        console.error("Error fetching shop data:", err);
+        console.error("Error fetching marketplace data:", err);
         setError("Failed to load products. Please try again later.");
       } finally {
         setIsLoading(false);
@@ -123,21 +122,23 @@ export default function ShopPage() {
     <div className="bg-[#1e232b] min-h-screen">
       {/* Header section */}
       <div className="py-16 text-center text-white bg-[#222831]">
-        <h1 className="text-4xl font-bold">Shop</h1>
+        <h1 className="text-4xl font-bold">MarketPlace</h1>
         <p className="text-sm text-gray-400 mt-2">
-          <Link to={createPageUrl("Home")} className="hover:text-purple-400">HOME</Link>
+          <Link to={createPageUrl("Home")} className="hover:text-purple-400">TOKA</Link>
           <span className="mx-2">&gt;</span>
-          <span>SHOP</span>
+          <span>MARKETPLACE</span>
         </p>
       </div>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
-          <main className="lg:col-span-3">
+          <main className="lg:col-span-3 order-2 lg:order-1">
             {/* Toolbar */}
-            <div className="flex flex-col md:flex-row justify-between items-center mb-8 text-gray-300">
-              <p>Showing {paginatedProducts.length} of {filteredAndSortedProducts.length} results</p>
+            <div className="flex flex-col md:flex-row justify-between items-center mb-6 text-gray-300">
+              <p className="text-sm">
+                <span className="text-green-400">●</span> Showing 1-{paginatedProducts.length} of {filteredAndSortedProducts.length} results
+              </p>
               <Select onValueChange={setSortBy} defaultValue="default">
                 <SelectTrigger className="w-[180px] bg-[#2c3440] border-gray-600 text-white mt-4 md:mt-0">
                   <SelectValue placeholder="Default sorting" />
@@ -152,43 +153,41 @@ export default function ShopPage() {
             </div>
 
             {isLoading ? <LoadingSkeleton /> : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {paginatedProducts.map(product => (
-                  <ShopProductCard key={product.id} product={product} />
+                  <MarketPlaceProductCard key={product.id} product={product} />
                 ))}
               </div>
             )}
             
             {/* Pagination */}
-            <div className="flex justify-center mt-12">
-              <div className="flex items-center space-x-2">
-                <Button 
-                  onClick={() => handlePageChange(currentPage - 1)} 
-                  disabled={currentPage === 1}
-                  variant="outline"
-                  className="text-white border-gray-600 hover:bg-gray-700"
-                >
-                  Previous
-                </Button>
-                <span className="text-white px-4">
-                  Page {currentPage} of {totalPages}
-                </span>
-                <Button 
-                  onClick={() => handlePageChange(currentPage + 1)} 
-                  disabled={currentPage === totalPages}
-                  variant="outline"
-                  className="text-white border-gray-600 hover:bg-gray-700"
-                >
-                  Next
-                </Button>
+            {!isLoading && totalPages > 1 && (
+              <div className="flex justify-center mt-8">
+                <div className="flex items-center space-x-1">
+                  {Array.from({ length: Math.min(totalPages, 4) }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`w-8 h-8 rounded text-sm transition-colors ${
+                        currentPage === page 
+                          ? 'bg-white text-black' 
+                          : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  {totalPages > 4 && (
+                    <span className="text-gray-400 px-2">...</span>
+                  )}
+                </div>
               </div>
-            </div>
-
+            )}
           </main>
 
           {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <Sidebar 
+          <div className="lg:col-span-1 order-1 lg:order-2">
+            <MarketPlaceSidebar 
               categories={categories}
               tags={allTags}
               filters={filters}

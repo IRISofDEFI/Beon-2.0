@@ -1,6 +1,9 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Shield, Users, Award, Leaf, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
 export default function AboutPage() {
   const brandBlue = 'rgb(73, 115, 162)';
@@ -178,15 +181,17 @@ export default function AboutPage() {
           <p className="max-w-xl mx-auto mb-8 text-gray-100" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.3)'}}>
             Discover our curated collection of premium plants and start your green journey today.
           </p>
-          <Button 
-            size="lg" 
-            className="text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl active:scale-95"
-            style={{ backgroundColor: purpleColor }}
-            onMouseOver={e => e.currentTarget.style.backgroundColor = purpleColorDark}
-            onMouseOut={e => e.currentTarget.style.backgroundColor = purpleColor}
-          >
-            Shop Now
-          </Button>
+          <Link to={createPageUrl('MarketPlace')}>
+            <Button 
+              size="lg" 
+              className="text-white font-bold py-3 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl active:scale-95"
+              style={{ backgroundColor: purpleColor }}
+              onMouseOver={e => e.currentTarget.style.backgroundColor = purpleColorDark}
+              onMouseOut={e => e.currentTarget.style.backgroundColor = purpleColor}
+            >
+              Shop Now
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
